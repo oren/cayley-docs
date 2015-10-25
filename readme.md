@@ -4,9 +4,10 @@
 cayley init --config=cayley.cfg
 cayley load --config=cayley.cfg --quads=canada.nq
 cayley repl --config=cayley.cfg
-cayley http --config=cayley.cfg
+cayley http --config=cayley.cfg -assets ~/projects/cayley/cayley
 ```
 
+repl command
 ```
 :a "justin trudeau" "in love with" "Sophie Grégoire" .
 
@@ -26,4 +27,9 @@ g.V("Justin Trudeau").Out().All()
 g.V("Krissy").Out().All()
 g.V("Krissy").Out("in love with").All()
 g.V("Krissy").Out("in love with").Out("in love with").All()
+```
+
+logging
+```
+cayley http --config=cayley.cfg -v=2 -alsologtostderr
 ```
