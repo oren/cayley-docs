@@ -27,6 +27,7 @@ g.V("Justin Trudeau").Out().All()
 g.V("Krissy").Out().All()
 g.V("Krissy").Out("in love with").All()
 g.V("Krissy").Out("in love with").Out("in love with").All()
+g.V().Tag("people").Out("in love with").Is("Justin Trudeau").All()
 ```
 
 logging
