@@ -22,7 +22,8 @@ cayley http --config=cayley.cfg
 :a Tyler "pissed with" "Sara" .
 :a Tyler "moves to" "United States" .
 
- g.V("Justin Trudeau").Out().All()
+g.V("Justin Trudeau").Out().All()
 g.V("Krissy").Out().All()
 g.V("Krissy").Out("in love with").All()
+g.V("Krissy").Out("in love with").Out("in love with").All()
 ```
