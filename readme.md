@@ -4,7 +4,7 @@
 cayley init --config=cayley.cfg
 cayley load --config=cayley.cfg --quads=canada.nq
 cayley repl --config=cayley.cfg
-cayley http --config=cayley.cfg -assets ~/projects/cayley/cayley
+cayley http --config=cayley.cfg -assets /home/oren/projects/go/src/github.com/google/cayley/
 ```
 
 repl command
