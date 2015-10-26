@@ -1,12 +1,38 @@
-"Justin Trudeau" "in love with" "<Sophie Grégoire>" .
-"Justin Trudeau" "does not like" "Blue Jays" .
-"Justin Trudeau" "ban" "puppies" .
-Krissy "lives in" "United States" .
-Krissy "in love with" "Justin Trudeau" .
-Krissy "moves to" Canada .
-Sara "lives in" Canada .
-Sara "in love with" "Justin trudeau" .
-Sara "votes for" "Justin Trudeau" .
-Tyler "lives in" Canada .
-Tyler "pissed with" Sara .
-Tyler "moves to" "United States" .
+person:sophie type Person .
+person:sophie name "<Sophie Grégoire>" .
+person:sophie born 1974 .
+person:sophie "lives in" country:canada .
+
+person:justin type Person .
+person:justin name "Justin Trudeau" .
+person:justin born 1972 .
+person:justin "lives in" country:canada .
+person:justin "in love with" person:sophie .
+person:justin hates sport:baseball .
+sport:baseball type Baseball .
+sport:baseball team "Blue Jays" .
+person:justin bans animals:puppies .
+animals:puppies type Puppies .
+
+person:krissy type Person .
+person:krissy name "Krissy Hamilton" .
+person:krissy born 1992 .
+person:krissy "lives in" country:us .
+person:krissy "in love with" person:justin .
+person:krissy "is moving to" country:canada .
+country:us name US .
+country:canada name Canada .
+
+person:sara type Person .
+person:sara name "Sara Solen" .
+person:sara born 1991 .
+person:sara "lives in" country:canada .
+person:sara "in love with" person:justin .
+person:sara "voted for" person:justin .
+
+person:tyler type Person .
+person:tyler name "Tyler Durden" .
+person:tyler born 1985 .
+person:tyler "lives in" country:canada .
+person:tyler "is pissed with" person:sara .
+person:tyler "is moving to" country:us .

@@ -9,25 +9,30 @@ cayley http --config=cayley.cfg -assets /home/oren/projects/go/src/github.com/go
 
 repl command
 ```
-:a "justin trudeau" "in love with" "Sophie Grégoire" .
+who is justin in love with?
+g.V("person:justin").Out("in love with").All()
 
-:a Krissy "lives in" "United States" .
-:a Krissy "in love with" "justin trudeau" .
-:a Krissy "moves to" "Canada" .
+who is in love with someone?
+g.V().Tag("name").Out("in love with").All()
 
-:a Sara "lives in" "Canada" .
-:a Sara "in love with" "justin trudeau" .
-:a Sara "votes for" "justin trudeau" .
+who is in love with justin?
+g.V().Tag("name").Out("in love with").Is("person:justin").All()
 
-:a Tyler "lives in" "Canada" .
-:a Tyler "pissed with" "Sara" .
-:a Tyler "moves to" "United States" .
+who is in love with justin? (another version)
+g.V("person:justin").In("in love with").All()
 
-g.V("Justin Trudeau").Out().All()
-g.V("Krissy").Out().All()
-g.V("Krissy").Out("in love with").All()
-g.V("Krissy").Out("in love with").Out("in love with").All()
-g.V().Tag("people").Out("in love with").Is("Justin Trudeau").All()
+who is in love with justin and lives in the US?
+g.V("person:justin").In("in love with").Tag("name").Out("lives in").Is("country:us").All()
+
+who is in love with justin, lives in the US, and is moving to canada?
+g.V("person:justin").In("in love with").Tag("name").Out("lives in").Is("country:us").All()
+
+who bans puppies?
+g.V("animals:puppies").In("bans").All()
+
+who is pissed with who?
+g.V("type").Out("person").Out("pissed with").All()
+
 ```
 
 logging
