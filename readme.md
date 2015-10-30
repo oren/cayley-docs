@@ -25,7 +25,10 @@ who is in love with justin and lives in the US?
 g.V("person:justin").In("in love with").Tag("name").Out("lives in").Is("country:us").All()
 
 who is in love with justin, lives in the US, and is moving to canada?
-g.V("person:justin").In("in love with").Tag("name").Out("lives in").Is("country:us").All()
+loveJustin = g.V("person:justin").In("in love with")
+liveUS = g.V("country:us").In("lives in")
+moveCanada = g.V("country:canada").In("is moving to")
+loveJustin.And(liveUS).And(moveCanada).All()
 
 who bans puppies?
 g.V("animals:puppies").In("bans").All()
