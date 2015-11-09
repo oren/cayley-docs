@@ -3,8 +3,8 @@
 ```
 cayley init --config=cayley.cfg
 cayley load --config=cayley.cfg --quads=canada.nq
-cayley repl --config=cayley.cfg
 cayley http --config=cayley.cfg -assets /home/oren/projects/go/src/github.com/google/cayley/
+cayley repl --config=cayley.cfg
 ```
 
 repl command
@@ -34,7 +34,7 @@ who bans puppies?
 g.V("animals:puppies").In("bans").All()
 
 who is pissed with who?
-g.V("type").Out("person").Out("pissed with").All()
+g.V("type").Out("person").Out("is pissed with").All()
 
 ```
 
