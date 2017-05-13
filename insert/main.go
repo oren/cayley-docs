@@ -1,3 +1,5 @@
+// How to insert administrator user into Cayley
+
 package main
 
 import (
