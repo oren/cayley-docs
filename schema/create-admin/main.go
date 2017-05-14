@@ -57,15 +57,16 @@ func main() {
 	hash, err := hashPassword(*password)
 	checkErr(err)
 
-	checkErr(Insert(store, Admin{
+	err = Insert(store, Admin{
 		ID:             genID(),
 		Name:           *name,
 		Email:          *email,
 		HashedPassword: hash,
-	}))
+	})
+
+	checkErr(err)
 
 	fmt.Println("Admin was created.")
-
 }
 
 // helper functions
