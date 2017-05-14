@@ -38,24 +38,31 @@ func genID() quad.IRI {
 func main() {
 	store := initializeAndOpenGraph(dbPath)
 
-	checkErr(Insert(store, Admin{
-		ID:             genID(),
-		Name:           "admin1",
-		Email:          "foo@gmail.com",
-		HashedPassword: "435iue8uou9eu",
-	}))
-
-	fmt.Println("Admin was created.")
-
+	printAllQuads(store)
+	printAllAdmins(store)
 }
 
 // helper functions
 
-func Insert(h *cayley.Handle, o interface{}) error {
-	qw := graph.NewWriter(h)
-	defer qw.Close() // don't forget to close a writer; it has some internal buffering
-	_, err := schema.WriteAsQuads(qw, o)
-	return err
+func printAllQuads(store *cayley.Handle) {
+	it := store.QuadsAllIterator()
+	defer it.Close()
+	fmt.Println("\nquads:")
+	for it.Next() {
+		fmt.Println(store.Quad(it.Result()))
+	}
+	fmt.Println()
+}
+
+func printAllAdmins(store *cayley.Handle) {
+	// get all admins
+	var admins []Admin
+	checkErr(schema.LoadTo(nil, store, &admins))
+	fmt.Println("admins:")
+	for _, a := range admins {
+		fmt.Printf("%+v\n", a)
+	}
+	fmt.Println()
 }
 
 func initializeAndOpenGraph(dbFile string) *cayley.Handle {
