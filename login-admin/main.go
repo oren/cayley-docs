@@ -1,10 +1,14 @@
+// usage: go run main.go -email baz@gmail.com -password 12345
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"math/rand"
 	"os"
+
+	"golang.org/x/crypto/bcrypt"
 
 	"github.com/cayleygraph/cayley"
 	"github.com/cayleygraph/cayley/graph"
@@ -38,20 +42,33 @@ func genID() quad.IRI {
 }
 
 func main() {
-	store := initializeAndOpenGraph(dbPath)
-	found, a := findAdmin(store, "foo@gmail.com")
-
-	if found {
-		fmt.Println("Admin by email:")
-		fmt.Printf("%+v\n\n", a)
+	email := flag.String("email", "", "Admin's email")
+	password := flag.String("password", "", "Admin's password")
+	flag.Parse()
+	if *email == "" || *password == "" {
+		fmt.Println("Arguments must include email and password")
 		os.Exit(0)
 	}
 
-	fmt.Println("Admin not found")
+	store := initializeAndOpenGraph(dbPath)
+	found, a := findAdmin(store, *email)
+
+	if !found {
+		fmt.Println("Admin not found")
+		os.Exit(0)
+	}
+
+	fmt.Printf("Admin by email: %+v\n\n", a)
+	match := checkPasswordHash(*password, a.HashedPassword)
+	fmt.Printf("Login?: %+v\n\n", match)
 
 }
 
 // helper functions
+func checkPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
+}
 
 func findAdmin(store *cayley.Handle, email string) (bool, Admin) {
 	var a Admin

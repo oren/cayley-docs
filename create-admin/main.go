@@ -1,9 +1,15 @@
+// usage: go run main.go -email baz@gmail.com -password 12345
+
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"math/rand"
+	"os"
+
+	"golang.org/x/crypto/bcrypt"
 
 	"github.com/cayleygraph/cayley"
 	"github.com/cayleygraph/cayley/graph"
@@ -36,13 +42,26 @@ func genID() quad.IRI {
 }
 
 func main() {
+	email := flag.String("email", "", "Admin's email")
+	password := flag.String("password", "", "Admin's password")
+	name := flag.String("name", "", "Admin's name")
+	flag.Parse()
+
+	if *email == "" || *password == "" {
+		fmt.Println("Arguments must include email and password")
+		os.Exit(0)
+	}
+
 	store := initializeAndOpenGraph(dbPath)
+
+	hash, err := hashPassword(*password)
+	checkErr(err)
 
 	checkErr(Insert(store, Admin{
 		ID:             genID(),
-		Name:           "admin1",
-		Email:          "foo@gmail.com",
-		HashedPassword: "435iue8uou9eu",
+		Name:           *name,
+		Email:          *email,
+		HashedPassword: hash,
 	}))
 
 	fmt.Println("Admin was created.")
@@ -50,6 +69,11 @@ func main() {
 }
 
 // helper functions
+
+func hashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes), err
+}
 
 func Insert(h *cayley.Handle, o interface{}) error {
 	qw := graph.NewWriter(h)
