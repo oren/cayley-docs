@@ -11,7 +11,6 @@ import (
 	_ "github.com/cayleygraph/cayley/graph/bolt"
 	"github.com/cayleygraph/cayley/quad"
 	"github.com/cayleygraph/cayley/schema"
-	uuid "github.com/satori/go.uuid"
 )
 
 var dbPath = "/tmp/db.boltdb"
@@ -19,6 +18,10 @@ var dbPath = "/tmp/db.boltdb"
 type Admin struct {
 	Email          string `json:"email" quad:"email"`
 	HashedPassword string `json:"hashedPassword"  quad:"hashed_password"`
+}
+
+func init() {
+	schema.RegisterType("Admin", Admin{})
 }
 
 func checkErr(err error) {
@@ -30,26 +33,23 @@ func checkErr(err error) {
 func main() {
 	store := initializeAndOpenGraph(dbPath)
 
-	schema.GenerateID = func(_ interface{}) quad.Value {
-		return quad.IRI(uuid.NewV1().String())
-	}
-
 	qw := graph.NewWriter(store)
 
-	email := "foo@gmail.com"
-	hash := "435iue8uou9eu"
-
 	admin := Admin{
-		email,
-		hash,
+		"foo@gmail.com",
+		"435iue8uou9eu",
 	}
 
 	var id quad.Value
 
 	id, err := schema.WriteAsQuads(qw, admin)
 	checkErr(err)
-	fmt.Println("admin", admin)
-	fmt.Println("id", id)
+	fmt.Println("admin", admin) // {foo@gmail.com 435iue8uou9eu}
+	fmt.Println("id", id)       // _:n7425755028193093394
+
+	var results []Admin
+	err = schema.LoadTo(nil, store, &results)
+	fmt.Println("results", results) // [{foo@gmail.com 435iue8uou9eu}]
 }
 
 func initializeAndOpenGraph(dbFile string) *cayley.Handle {
