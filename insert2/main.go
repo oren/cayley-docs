@@ -106,6 +106,8 @@ func CreateAdmin(h *cayley.Handle, a Admin) error {
 	t := cayley.NewTransaction()
 	// both subject and predicate should be IRI. why?
 
+	t.AddQuad(quad.Make("3232ueououueu", "is_a", "admin", nil))
+
 	t.AddQuad(quad.Make(quad.IRI(uuid), quad.IRI("is_a"), quad.String("admin"), nil))
 	t.AddQuad(quad.Make(quad.IRI(uuid), quad.IRI("email"), quad.String(a.Email), nil))
 	t.AddQuad(quad.Make(quad.IRI(uuid), quad.IRI("hashed_password"), quad.String(a.HashedPassword), nil))
@@ -124,12 +126,11 @@ func ReadAdmins(h *cayley.Handle, email *regexp.Regexp) ([]Admin, error) {
 		Save(quad.IRI("email"), "email").
 		Save(quad.IRI("hashed_password"), "hashed_password")
 
-	// p := cayley.StartPath(h).Has(quad.IRI("is_a"), quad.String("admin")).
-	// 	Save(quad.IRI("email"), "email")
+	fmt.Println("p", p)
 
 	results := []Admin{}
 	err := p.Iterate(nil).TagValues(nil, func(tags map[string]quad.Value) {
-		fmt.Println("tags", tags)
+		// fmt.Println("tags", tags)
 
 		// tags["id"] contain a subject node. it's an interface so we have to convert it first to IRI and than to String
 		results = append(results, Admin{
