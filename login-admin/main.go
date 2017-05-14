@@ -45,6 +45,7 @@ func main() {
 	email := flag.String("email", "", "Admin's email")
 	password := flag.String("password", "", "Admin's password")
 	flag.Parse()
+
 	if *email == "" || *password == "" {
 		fmt.Println("Arguments must include email and password")
 		os.Exit(0)

@@ -1,4 +1,4 @@
-// usage: go run main.go -email baz@gmail.com -password 12345
+// usage: go run main.go -email baz@gmail.com -password 12345 -name "josh"
 
 package main
 
@@ -47,8 +47,8 @@ func main() {
 	name := flag.String("name", "", "Admin's name")
 	flag.Parse()
 
-	if *email == "" || *password == "" {
-		fmt.Println("Arguments must include email and password")
+	if *email == "" || *password == "" || *name == "" {
+		fmt.Println("Arguments must include email,  password, and name")
 		os.Exit(0)
 	}
 
