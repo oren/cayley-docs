@@ -102,7 +102,10 @@ func CreateAdmin(h *cayley.Handle, a Admin) error {
 
 	uuid := uuid.NewV1().String()
 
+	// if one command fail, rollback
 	t := cayley.NewTransaction()
+	// both subject and predicate should be IRI. why?
+
 	t.AddQuad(quad.Make(quad.IRI(uuid), quad.IRI("is_a"), quad.String("admin"), nil))
 	t.AddQuad(quad.Make(quad.IRI(uuid), quad.IRI("email"), quad.String(a.Email), nil))
 	t.AddQuad(quad.Make(quad.IRI(uuid), quad.IRI("hashed_password"), quad.String(a.HashedPassword), nil))
@@ -115,22 +118,32 @@ func CreateAdmin(h *cayley.Handle, a Admin) error {
 }
 
 func ReadAdmins(h *cayley.Handle, email *regexp.Regexp) ([]Admin, error) {
-	p := cayley.StartPath(h).Tag("id").
+	p := cayley.StartPath(h).
 		Out(quad.IRI("email")).Regex(email).In(quad.IRI("email")).Has(quad.IRI("is_a"), quad.String("admin")).
+		Tag("id").
 		Save(quad.IRI("email"), "email").
 		Save(quad.IRI("hashed_password"), "hashed_password")
 
+	// p := cayley.StartPath(h).Has(quad.IRI("is_a"), quad.String("admin")).
+	// 	Save(quad.IRI("email"), "email")
+
 	results := []Admin{}
 	err := p.Iterate(nil).TagValues(nil, func(tags map[string]quad.Value) {
+		fmt.Println("tags", tags)
+
+		// tags["id"] contain a subject node. it's an interface so we have to convert it first to IRI and than to String
 		results = append(results, Admin{
 			ID:             quad.NativeOf(tags["id"]).(quad.IRI).String(),
 			Email:          quad.NativeOf(tags["email"]).(string),
 			HashedPassword: quad.NativeOf(tags["hashed_password"]).(string),
 		})
 	})
+
 	if err != nil {
 		return []Admin{}, err
 	}
+
+	// return []Admin{}, nil
 	return results, nil
 }
 

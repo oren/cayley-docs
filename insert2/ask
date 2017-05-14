@@ -1,0 +1,9 @@
+1. why transactions?
+2. why IRI for subjects and predicates
+3. what's the quad.String do?
+t.AddQuad(quad.Make(quad.IRI(uuid), quad.IRI("is_a"), quad.String("admin"), nil))
+should the admin object be an IRI instead of a string? how to decide?
+
+Out(), In(), and Has() - is it true that the first argument is always a predicate?
+
+Regex() and Has() is a way to fliter the numbers of nodes on my path object
