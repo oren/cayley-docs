@@ -51,9 +51,18 @@ func main() {
 	store := initializeAndOpenGraph(dbPath)
 
 	if *adminId != "" {
+		// you should use the same type for an id as in your structs or id generator
+		// that's why the id should be an IRI here
 		id := quad.IRI(*adminId)
 
-		err := store.RemoveNode(store.ValueOf(id))
+		// ask QuadStore to find this value in the store
+		// this function returns an opaque object that cannot be inspected
+		// but tells the database where to find a node without any lookups
+		node := store.ValueOf(id)
+
+		// since RemoveNode is considered a low-level API comparing to schema,
+		// it uses opaque values to remove all relations pointing to a node
+		err := store.RemoveNode(node)
 
 		if err != nil {
 			fmt.Println("Error removing the node", err)
