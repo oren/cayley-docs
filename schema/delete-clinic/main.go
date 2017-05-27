@@ -34,8 +34,6 @@ type Admin struct {
 	Name           string `json:"name" quad:"name"`
 	Email          string `json:"email" quad:"email"`
 	HashedPassword string `json:"hashedPassword"  quad:"hashed_password"`
-	Password       string `quad:"-"`
-	LoggedIn       string `quad:"opt"`
 }
 
 func checkErr(err error) {
@@ -51,24 +49,7 @@ func main() {
 	store := initializeAndOpenGraph(dbPath)
 
 	if *adminId != "" {
-		// you should use the same type for an id as in your structs or id generator
-		// that's why the id should be an IRI here
-		id := quad.IRI(*adminId)
-
-		// ask QuadStore to find this value in the store
-		// this function returns an opaque object that cannot be inspected
-		// but tells the database where to find a node without any lookups
-		node := store.ValueOf(id)
-
-		// since RemoveNode is considered a low-level API comparing to schema,
-		// it uses opaque values to remove all relations pointing to a node
-		err := store.RemoveNode(node)
-
-		if err != nil {
-			fmt.Println("Error removing the node", err)
-		}
-
-		printAllQuads(store)
+		removeAdmin(store, *adminId)
 		return
 	}
 
@@ -82,6 +63,7 @@ func main() {
 
 	fmt.Println("Admin was created.")
 	printAllQuads(store)
+
 }
 
 // helper functions
@@ -115,6 +97,20 @@ func printAllQuads(store *cayley.Handle) {
 	for _, q := range quads {
 		fmt.Println(q)
 	}
+}
+
+func removeAdmin(store *cayley.Handle, adminId string) error {
+	// you should use the same type for an id as in your structs or id generator
+	// that's why the id should be an IRI here
+	idIRI := quad.IRI(adminId)
+	err := store.RemoveNode(idIRI)
+
+	if err != nil {
+		fmt.Println("Error removing the node", err)
+	}
+
+	printAllQuads(store)
+	return nil
 }
 
 func readAllQuads(store *cayley.Handle) ([]quad.Quad, error) {
