@@ -34,4 +34,4 @@ Quads:
 If you see something similar to the above output, you are doing fine!
 You just created an administrator and a clinic and connected between them.
 
-You should try [the second how-to guide](../01-visualize/README.md), and learn how to visualize your data.
+You should try [the second how-to guide](../02-visualize/README.md), and learn how to visualize your data.
