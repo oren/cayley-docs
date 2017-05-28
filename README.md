@@ -18,7 +18,6 @@ TBD
 This documentation structure was inspired by [this article](https://www.divio.com/en/blog/documentation/).
 
 A tutorial:
-
 * is learning-oriented
 * allows the newcomer to get started
 * is a lesson
@@ -27,7 +26,6 @@ Analogy: teaching a small child how to cook
 
 
 A how-to guide:
-
 * is goal-oriented
 * shows how to solve a specific problem
 * is a series of steps
@@ -35,7 +33,6 @@ A how-to guide:
 Analogy: a recipe in a cookery book
 
 A discussion:
-
 * is understanding-oriented
 * explains
 * provides background and context
@@ -43,7 +40,6 @@ A discussion:
 Analogy: an article on culinary social history
 
 A reference guide:
-
 * is information-oriented
 * describes the machinery
 * is accurate and complete
