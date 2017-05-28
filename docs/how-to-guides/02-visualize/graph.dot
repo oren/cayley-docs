@@ -1,0 +1,13 @@
+digraph cayley_graph {
+  "<831c71de-43eb-11e7-9cd0-843a4b0f5a10>"[color="green", style="filled"];
+  "<831bc569-43eb-11e7-9cd0-843a4b0f5a10>"[color="lightblue", style="filled"];
+
+	"<831c71de-43eb-11e7-9cd0-843a4b0f5a10>" -> "<Clinic>" [ label = "<rdf:type>" ];
+	"<831bc569-43eb-11e7-9cd0-843a4b0f5a10>" -> "<Admin>" [ label = "<rdf:type>" ];
+	"<831bc569-43eb-11e7-9cd0-843a4b0f5a10>" -> "\"josh_f@gmail.com\"" [ label = "<email>" ];
+	"<831c71de-43eb-11e7-9cd0-843a4b0f5a10>" -> "\"11 boar st, Singapore 11233\"" [ label = "<address>" ];
+	"<831c71de-43eb-11e7-9cd0-843a4b0f5a10>" -> "\"Healthy Life\"" [ label = "<name>" ];
+	"<831bc569-43eb-11e7-9cd0-843a4b0f5a10>" -> "\"Josh\"" [ label = "<name>" ];
+	"<831bc569-43eb-11e7-9cd0-843a4b0f5a10>" -> "\"435iue8uou9eu\"" [ label = "<hashed_password>" ];
+	"<831c71de-43eb-11e7-9cd0-843a4b0f5a10>" -> "<831bc569-43eb-11e7-9cd0-843a4b0f5a10>" [ label = "<createdBy>" ];
+}
