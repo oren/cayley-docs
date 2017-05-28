@@ -12,7 +12,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-var dbPath = "/tmp/db.boltdb"
+var dbPath = "db.boltdb"
 
 type Admin struct {
 	Name           string `json:"name" quad:"name"`
