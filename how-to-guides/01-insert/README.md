@@ -7,7 +7,7 @@ go get
 go run main.go
 ```
 
-Notice the output of the console:
+Notice the output in the terminal:
 ```
 Admins:
 ------
