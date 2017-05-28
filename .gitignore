@@ -1,2 +1,4 @@
 tags
 .cayley_history
+how-to-guides/01-insert/db.boltdb
+how-to-guides/02-visualize/db.boltdb
