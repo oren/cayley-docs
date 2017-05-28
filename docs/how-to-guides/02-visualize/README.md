@@ -14,6 +14,6 @@ cayley dump --dbpath "db.boltdb" --db bolt --dump_format=graphviz -o=- | dot -Tp
 This command will generate an image file called graph.png. Open it and it should be something similar to this (without the fancy colors):
 ![graph](graph.png)
 
-The green circle is the clinic and the blue is the admin. You can also see the `createdBy` edge from the clinic to the admin. 
+The green circle is the clinic and the blue is the admin. We call them **subjects**. The other circles are called **objects** and the arrows are called **predicates**. You can also see the `createdBy` edge from the clinic to the admin.
 
 Good job! Now you now how to visualize your datastore. In the future Cayley will have better ways to visualize the data but for now you can use this simple approach.
