@@ -3,6 +3,7 @@
 ## How to insert data into Cayley using BoltDB.
 Run the following:
 ```
+go get
 go run main.go
 ```
 
