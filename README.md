@@ -1,5 +1,8 @@
 # Cayley Documentation
 
+Good documentation have four flavors: tutorials, how-tos, discussions, and references.
+In this repo I'll try to capture whatever I feel Cayley is lacking and hopefuly some of it will be part of Cayley's offical docs.
+
 ## Tutorials
 TBD
 
