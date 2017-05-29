@@ -16,4 +16,4 @@ This command will generate an image file called graph.png. Open it and it should
 
 The green circle is the clinic and the blue is the admin. We call them **subjects**. The other circles are called **objects** and the arrows are called **predicates**. You can also see the `createdBy` edge from the clinic to the admin. You are probably asking yourself a lot of questions and it all sounds a bit confusing. Don't worry about all the details for now. We'll go over it later on probably in a format of a tutorial.
 
-Good job! Now you now how to visualize your datastore. In the future Cayley will have better ways to visualize the data but for now you can use this simple approach.
+Good job! Now you know how to visualize your datastore. In the future Cayley will have better ways to visualize the data but for now you can use this simple approach.
