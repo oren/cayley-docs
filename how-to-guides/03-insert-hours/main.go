@@ -24,7 +24,7 @@ type Clinic struct {
 	Name      string         `json:"name" quad:"name"`
 	Address1  string         `json:"address" quad:"address"`
 	CreatedBy quad.IRI       `quad:"createdBy"`
-	Hours     []OpeningHours `quads:"schema:openingHoursSpecification"`
+	Hours     []OpeningHours `quad:"schema:openingHoursSpecification"`
 }
 
 type OpeningHours struct {
@@ -61,16 +61,23 @@ func main() {
 	adminId, err := findAdminID(store, a.Email)
 	checkErr(err)
 
-	mon := OpeningHours{
+	mon1 := OpeningHours{
 		DayOfWeek: quad.IRI(Monday),
 		Slot:      1,
 		Opens:     "8:00",
 		Closes:    "12:00",
 	}
 
+	mon2 := OpeningHours{
+		DayOfWeek: quad.IRI(Monday),
+		Slot:      2,
+		Opens:     "13:30",
+		Closes:    "18:00",
+	}
+
 	var hours []OpeningHours
-	hours = append(hours, mon)
-	fmt.Println("hours", hours)
+	hours = append(hours, mon1)
+	hours = append(hours, mon2)
 
 	c := Clinic{
 		Name:      "Healthy Life",
@@ -167,7 +174,12 @@ func printClinics(store *cayley.Handle) {
 		fmt.Println("Name:", c.Name)
 		fmt.Println("Email:", c.Address1)
 
-		fmt.Println("Hours", c.Hours)
+		for _, h := range c.Hours {
+			fmt.Println("Day", h.DayOfWeek)
+			fmt.Println("Slot", h.Slot)
+			fmt.Println("Opens", h.Opens)
+			fmt.Println("Closes", h.Closes)
+		}
 	}
 
 	fmt.Println()
