@@ -43,10 +43,6 @@ func init() {
 	}
 }
 
-const (
-	Monday = quad.IRI("http://schema.org/Monday")
-)
-
 func main() {
 	store := initializeAndOpenGraph(dbPath)
 	a := Admin{
@@ -60,6 +56,10 @@ func main() {
 
 	adminId, err := findAdminID(store, a.Email)
 	checkErr(err)
+
+	const (
+		Monday = quad.IRI("http://schema.org/Monday")
+	)
 
 	mon1 := OpeningHours{
 		DayOfWeek: quad.IRI(Monday),
