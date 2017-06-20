@@ -10,6 +10,7 @@ import (
 	"github.com/cayleygraph/cayley/quad"
 	"github.com/cayleygraph/cayley/schema"
 	uuid "github.com/satori/go.uuid"
+	"strings"
 )
 
 var dbPath = "db.boltdb"
@@ -175,7 +176,7 @@ func printClinics(store *cayley.Handle) {
 		fmt.Println("Email:", c.Address1)
 
 		for _, h := range c.Hours {
-			fmt.Println("Day", h.DayOfWeek)
+			fmt.Println("Day", strings.Split(string(h.DayOfWeek), "/")[3])
 			fmt.Println("Slot", h.Slot)
 			fmt.Println("Opens", h.Opens)
 			fmt.Println("Closes", h.Closes)
