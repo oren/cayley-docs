@@ -6,11 +6,12 @@ import (
 
 	"github.com/cayleygraph/cayley"
 	"github.com/cayleygraph/cayley/graph"
-	_ "github.com/cayleygraph/cayley/graph/bolt"
+	_ "github.com/cayleygraph/cayley/graph/kv/bolt"
 	"github.com/cayleygraph/cayley/quad"
 	"github.com/cayleygraph/cayley/schema"
 	uuid "github.com/satori/go.uuid"
 	"strings"
+	"context"
 )
 
 var dbPath = "db.boltdb"
@@ -139,7 +140,9 @@ func printQuads(store *cayley.Handle) {
 	fmt.Println("Quads:")
 	fmt.Println("-----")
 
-	for it.Next() {
+	ctx := context.TODO()
+
+	for it.Next(ctx) {
 		fmt.Println(store.Quad(it.Result()))
 	}
 
