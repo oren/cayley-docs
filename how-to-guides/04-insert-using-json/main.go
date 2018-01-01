@@ -8,7 +8,6 @@ import (
 	"os"
 
 	"context"
-	"strings"
 
 	"github.com/cayleygraph/cayley"
 	"github.com/cayleygraph/cayley/graph"
@@ -109,6 +108,18 @@ func checkErr(err error) {
 	}
 }
 
+func initializeAndOpenGraph(dbFile string) *cayley.Handle {
+	graph.InitQuadStore("bolt", dbFile, nil)
+
+	// Open and use the database
+	store, err := cayley.NewGraph("bolt", dbFile, nil)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	return store
+}
+
 // LoadJson loads json of a clinic and returns a Clinic struct
 func loadJSON(JSONFile string) *Clinic {
 	raw, err := ioutil.ReadFile(JSONFile)
@@ -128,18 +139,6 @@ func loadJSON(JSONFile string) *Clinic {
 	}
 
 	return &c
-}
-
-func initializeAndOpenGraph(dbFile string) *cayley.Handle {
-	graph.InitQuadStore("bolt", dbFile, nil)
-
-	// Open and use the database
-	store, err := cayley.NewGraph("bolt", dbFile, nil)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	return store
 }
 
 func insert(h *cayley.Handle, o interface{}) error {
@@ -207,7 +206,11 @@ func printClinics(store *cayley.Handle) {
 		fmt.Println("Email:", c.Address1)
 
 		for _, h := range c.Hours {
-			fmt.Println("Day", strings.Split(string(h.DayOfWeek), "/")[3])
+			fmt.Println("---")
+			fmt.Println("h", h)
+			fmt.Println("---")
+			// fmt.Println("Day", strings.Split(string(h.DayOfWeek), "/")[3])
+			fmt.Println("Day", string(h.DayOfWeek))
 			fmt.Println("Slot", h.Slot)
 			fmt.Println("Opens", h.Opens)
 			fmt.Println("Closes", h.Closes)
