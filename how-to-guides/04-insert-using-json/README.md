@@ -1,6 +1,6 @@
 # How-to guide
 
-## How to insert opening hours of a clinic
+## How to insert clinic using a JSON file
 Run the following:
 ```
 go get
