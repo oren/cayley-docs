@@ -139,6 +139,11 @@ func update(h *cayley.Handle, o interface{}, id quad.Value) error {
 	checkErr(schema.LoadTo(nil, h, &clinic, id))
 	fmt.Println("clinic loaded", clinic)
 
+	clinic.Address1 = "Seasame st" // TODO: read this from the json file
+
+	id, err := insert(h, clinic)
+	checkErr(err)
+
 	// qw := graph.NewWriter(h)
 	// defer qw.Close() // don't forget to close a writer; it has some internal buffering
 	// _, err := schema.WriteAsQuads(qw, o)
