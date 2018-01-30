@@ -26,6 +26,7 @@ type Admin struct {
 }
 
 type Clinic struct {
+	ID        quad.IRI       `json:"id" quad:"@id"`
 	Name      string         `json:"name" quad:"name"`
 	Address1  string         `json:"address" quad:"address"`
 	CreatedBy quad.IRI       `quad:"createdBy"`
@@ -136,18 +137,15 @@ func update(h *cayley.Handle, o interface{}, id quad.Value) error {
 	// save clinic
 
 	var clinic Clinic
+	t := cayley.NewTransaction()
 	checkErr(schema.LoadTo(nil, h, &clinic, id))
-	fmt.Println("clinic loaded", clinic)
-
-	clinic.Address1 = "Seasame st" // TODO: read this from the json file
-
+	clinic.Address1 = "Seasame st"    // TODO: read this from the json file
+	clinic.OfficeTel = "999 999 9999" // TODO: read this from the json file
 	id, err := insert(h, clinic)
 	checkErr(err)
+	err = h.ApplyTransaction(t)
+	checkErr(err)
 
-	// qw := graph.NewWriter(h)
-	// defer qw.Close() // don't forget to close a writer; it has some internal buffering
-	// _, err := schema.WriteAsQuads(qw, o)
-	// return err
 	return nil
 }
 
@@ -219,6 +217,7 @@ func printClinics(store *cayley.Handle) {
 			fmt.Println("Opens", h.Opens)
 			fmt.Println("Closes", h.Closes)
 		}
+		fmt.Println("----------------------------")
 	}
 
 	fmt.Println()
