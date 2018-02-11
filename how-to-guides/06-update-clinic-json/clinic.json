@@ -1,0 +1,14 @@
+{
+  "name": "Heal Now",
+  "Address": "3234 Rot Road, Singapore",
+  "officeTel": "65 6100 0939",
+  "CreatedBy": "Doe Joe",
+  "hours": [
+    {"day":"mon", "slot":1, "opens": "08:00", "closes": "12:00"},
+    {"day":"mon", "slot":2, "opens": "13:00", "closes": "15:30"},
+    {"day":"mon", "slot":3, "opens": "16:00", "closes": "19:00"},
+    {"day":"tue", "slot":1, "opens": "09:00", "closes": "12:30"},
+    {"day":"tue", "slot":2, "opens": "13:00", "closes": "18:00"}
+  ]
+
+}
