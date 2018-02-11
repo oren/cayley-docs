@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -26,6 +27,7 @@ type Admin struct {
 }
 
 type Clinic struct {
+	ID        quad.IRI       `json:"id" quad:"@id"`
 	Name      string         `json:"name" quad:"name"`
 	Address1  string         `json:"address" quad:"address"`
 	CreatedBy quad.IRI       `quad:"createdBy"`
@@ -51,38 +53,43 @@ func init() {
 
 func main() {
 	store := initializeAndOpenGraph(dbPath)
-	a := Admin{
-		Name:           "Josh",
-		Email:          "josh_f@gmail.com",
-		HashedPassword: "435iue8uou9eu",
-	}
+	// a := Admin{
+	// 	Name:           "Josh",
+	// 	Email:          "josh_f@gmail.com",
+	// 	HashedPassword: "435iue8uou9eu",
+	// }
 
-	_, err := insert(store, a)
-	checkErr(err)
+	// id, err := insert(store, a)
+	// checkErr(err)
 
-	var adminId quad.IRI
-	adminId, err = findAdminID(store, a.Email)
-	checkErr(err)
+	// adminId, err := findAdminID(store, a.Email)
+	// checkErr(err)
 
 	// const (
 	// 	Monday = quad.IRI("http://schema.org/Monday")
 	// )
 
-	c := loadJSON("clinic.json")
-	c.CreatedBy = adminId
+	// c := loadJSON("clinic.json")
+	// c.CreatedBy = adminId
 
-	var id quad.Value
-	id, err = insert(store, c)
-	checkErr(err)
-	fmt.Println("id", id)
+	// var id quad.Value
+	// id, err = insert(store, c)
+	// checkErr(err)
 
-	// // c = loadJSON("updated-clinic.json")
+	// fmt.Println(id)
+
+	c = loadJSON("updated-clinic.json")
+
+	quad, ok := quad.AsValue(clinicID)
+	if !ok {
+		return errors.New("Error in converting clinic ID into a quad")
+	}
 
 	err = update(store, c, id)
 	checkErr(err)
 
-	// printAdmins(store)
-	// printClinics(store)
+	printAdmins(store)
+	printClinics(store)
 	printQuads(store)
 }
 
@@ -126,8 +133,6 @@ func loadJSON(JSONFile string) *Clinic {
 }
 
 func insert(h *cayley.Handle, o interface{}) (quad.Value, error) {
-	fmt.Println("o", o)
-
 	qw := graph.NewWriter(h)
 	defer qw.Close() // don't forget to close a writer; it has some internal buffering
 	id, err := schema.WriteAsQuads(qw, o)
@@ -139,15 +144,14 @@ func update(h *cayley.Handle, o interface{}, id quad.Value) error {
 	// read fields from json file and update clinic
 	// save clinic
 
+	var clinic Clinic
 	t := cayley.NewTransaction()
-
-	t.RemoveQuad(quad.Make(id, quad.IRI("address"), "3234 Rot Road, Singapore", nil))
-	t.AddQuad(quad.Make(id, quad.IRI("address"), "3235 Rot Road, Singapore", nil))
-
-	t.RemoveQuad(quad.Make(id, quad.IRI("officeTel"), "65 6100 0939", nil))
-	t.AddQuad(quad.Make(id, quad.IRI("officeTel"), "75 6100 0939", nil))
-
-	err := h.ApplyTransaction(t)
+	checkErr(schema.LoadTo(nil, h, &clinic, id))
+	clinic.Address1 = "Seasame st"    // TODO: read this from the json file
+	clinic.OfficeTel = "999 999 9999" // TODO: read this from the json file
+	id, err := insert(h, clinic)
+	checkErr(err)
+	err = h.ApplyTransaction(t)
 	checkErr(err)
 
 	return nil
