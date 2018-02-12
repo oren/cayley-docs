@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"reflect"
 
 	"context"
 
@@ -50,6 +51,7 @@ func init() {
 }
 
 func main() {
+	os.RemoveAll("db.boltdb")
 	store := initializeAndOpenGraph(dbPath)
 	a := Admin{
 		Name:           "Josh",
@@ -68,22 +70,21 @@ func main() {
 	// 	Monday = quad.IRI("http://schema.org/Monday")
 	// )
 
-	c := loadJSON("clinic.json")
-	c.CreatedBy = adminId
+	existingClinic := loadJSON("clinic.json")
+	existingClinic.CreatedBy = adminId
 
 	var id quad.Value
-	id, err = insert(store, c)
+	id, err = insert(store, existingClinic)
 	checkErr(err)
-	fmt.Println("id", id)
 
-	// // c = loadJSON("updated-clinic.json")
+	updatedClinic := loadJSON("updated-clinic.json")
 
-	err = update(store, c, id)
+	err = update(store, existingClinic, updatedClinic, id)
 	checkErr(err)
 
 	// printAdmins(store)
 	// printClinics(store)
-	printQuads(store)
+	// printQuads(store)
 }
 
 func checkErr(err error) {
@@ -126,18 +127,28 @@ func loadJSON(JSONFile string) *Clinic {
 }
 
 func insert(h *cayley.Handle, o interface{}) (quad.Value, error) {
-	fmt.Println("o", o)
-
 	qw := graph.NewWriter(h)
 	defer qw.Close() // don't forget to close a writer; it has some internal buffering
 	id, err := schema.WriteAsQuads(qw, o)
 	return id, err
 }
 
-func update(h *cayley.Handle, o interface{}, id quad.Value) error {
-	// find a clinic with a given name
-	// read fields from json file and update clinic
+func update(h *cayley.Handle, existingClinic *Clinic, updatedClinic *Clinic, id quad.Value) error {
+	// iterate on fields of updatedClinic
+	// add field to clinic
 	// save clinic
+
+	fmt.Println("clinic", updatedClinic)
+	v := reflect.ValueOf(updatedClinic)
+	fmt.Println("v", v)
+
+	values := make([]interface{}, v.NumField())
+
+	for i := 0; i < v.NumField(); i++ {
+		values[i] = v.Field(i).Interface()
+	}
+
+	fmt.Println(values)
 
 	t := cayley.NewTransaction()
 
